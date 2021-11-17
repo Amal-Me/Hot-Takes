@@ -1,8 +1,9 @@
 const Sauce = require('../models/Sauce');
+const fs = require('fs');
 
 exports.getAllSauces = (req,res,next) =>{
     Sauce.find()//methode find pour renvoyer un tableau de ttes les sauces ds la BDD
-    .then(sauces => res.status(200).json('aaa'))
+    .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({error}));
 };
 exports.getOneSauce = (req,res,next) =>{
@@ -21,10 +22,10 @@ exports.createSauce = (req,res,next) =>{
     .then(() => res.status(201).json({ message : 'Sauce enregistrée'}))
     .catch(error => res.status(400).json({error}));
 };
-exports.likeSauce = (req,res,next) =>{
-
-}
-exports.modifySauce = (req,res,next) =>{
+exports.likeSauce = (req,res,next) => {
+    console.log('likesauce');
+};
+exports.modifySauce = (req,res,next) => {
     const sauceObject = req.file ?
     { 
         ...JSON.parse(req.body.sauce),
@@ -36,7 +37,14 @@ exports.modifySauce = (req,res,next) =>{
     .catch(error => res.status(400).json({error}));
 };
 exports.deleteSauce = (req,res,next) =>{
-    Sauce.deleteOne({ _id: req.params.id })//methode deleteOne avec 1 seul arg vu qu on supprime
-      .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-      .catch(error => res.status(400).json({ error }));
+    Sauce.findOne({ _id: req.params.id})//recherche de la sauce
+    .then(sauce => {
+        const filename = sauce.imageUrl.split('/images/')[1];//on decoupe l URL et on stocke le nom du fichier
+        fs.unlink(`images/${filename}`, () => {//on supprime le fichier du server
+            Sauce.deleteOne({ _id: req.params.id })//on supprime la sauce de la BDD 
+                .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
+                .catch(error => res.status(400).json({ error }));
+        });
+    })
+    .catch(error => res.status(500).json({ error }));
 };
