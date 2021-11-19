@@ -11,8 +11,8 @@ const sauceSchema = mongoose.Schema({
     heat: { type: Number},
     likes: { type: Number},
     dislikes: { type: Number},
-    usersLiked: { type: Array},
-    usersDisliked: { type: Array}
+    usersLiked: { type: [String]},
+    usersDisliked: { type: [String]}
 });
 
 // sauceSchema.plugin(uniqueValidator);
