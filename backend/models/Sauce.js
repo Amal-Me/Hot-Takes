@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-// const uniqueValidator = require('mongoose-unique-validator');
 
+//utilisation de la méthode SCHEMA de mongoose pour créer un schéma de données
 const sauceSchema = mongoose.Schema({
     userId : { type: String, required: true},
     name: { type: String, required: true},
@@ -15,5 +15,4 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: { type: [String]}
 });
 
-// sauceSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('Sauce', sauceSchema);

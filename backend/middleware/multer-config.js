@@ -1,21 +1,25 @@
+//importation Multer pour gérer les fichiers entrants(images)
 const multer = require('multer');
-
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png'
-
 };
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-      callback(null, 'images')  // chemin ou stocker 
+      // chemin ou stocker les fichiers
+      callback(null, 'images')   
     },
     filename: (req, file, callback) => {
-        const name = file.originalname.split(' ').join('_');//remplacement des espaces
-        const extension = MIME_TYPES[file.mimetype];//choix de l extension
-        callback(null, name + Date.now() + '.' + extension);//assemblage unique
+        //remplacement des espaces
+        const name      = file.originalname.split(' ').join('_');
+        //choix de l extension appropriée
+        const extension = MIME_TYPES[file.mimetype];
+        //assemblage unique(nom d'origine, date du jour . extension)
+        callback(null, name + Date.now() + '.' + extension);
     }
 });
 
-module.exports = multer({storage}).single('image');//export uniquement telechargement de fichier image
+//export:uniquement telechargement de fichier image
+module.exports = multer({storage}).single('image');

@@ -1,21 +1,20 @@
-const http = require('http');
-const app = require('./app');
+//importation package HTTP pour créer un serveur
+const http          = require('http');
+const app           = require('./app');
 const normalizePort = val => {
   const port = parseInt(val, 10);
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
+  if (isNaN(port))  { return val;}
+  if (port >= 0)    { return port;}
   return false;
 };
-const port = normalizePort(process.env.PORT || '3000');//renvoi un port valide
+
+//renvoi un port valide
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-const errorHandler = error => {//recherche les erreurs et les gère
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+
+//recherche les erreurs et les gère
+const errorHandler = error => {
+  if (error.syscall !== 'listen') { throw error;}
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
   switch (error.code) {
@@ -33,10 +32,11 @@ const errorHandler = error => {//recherche les erreurs et les gère
 };
 const server = http.createServer(app);
 server.on('error', errorHandler);
-server.on('listening', () => {//ecouteur sur le port ou le canal nommé
+
+//ecouteur sur le port ou le canal nommé
+server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
   console.log('Listening on ' + bind);
 });
 server.listen(port);
-
