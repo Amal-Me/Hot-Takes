@@ -4,6 +4,7 @@ const bcrypt    = require('bcrypt');
 const User      = require('../models/User');
 //jeton permettant d’échanger des informations de manière sécurisée
 const jwt       = require('jsonwebtoken');
+require('dotenv').config();
 
 exports.signup = (req,res,next) =>{
     //chiffrement du mot de passe
@@ -37,7 +38,7 @@ exports.login = (req,res,next) =>{
                 token: jwt.sign(
                     //encodage du token
                     { userId: user._id},
-                    'RANDOM_TOKEN_SECRET',
+                    process.env.TOKEN_KEY,
                     { expiresIn: '24h'}
                 )
             });

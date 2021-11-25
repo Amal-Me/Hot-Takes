@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-//pré-validation des informations
+//pré-validation des informations(garantie l'unicité)
 const uniqueValidator = require('mongoose-unique-validator');
 
 //utilisation de la méthode SCHEMA de mongoose pour créer un schéma de données

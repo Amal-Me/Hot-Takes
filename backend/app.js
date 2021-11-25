@@ -7,9 +7,11 @@ const mongoose    = require('mongoose');
 const path        = require('path');
 const userRoutes  = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
+//importation dotenv pour masquer les informations voulues 
+require('dotenv').config();
 
 //connection a la base de données
-mongoose.connect('mongodb+srv://user_1:YanissouTest1@cluster0.ri6na.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect(process.env.CONNECT_MDB,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
 .then(() => console.log('Connexion à MongoDB réussie !'))

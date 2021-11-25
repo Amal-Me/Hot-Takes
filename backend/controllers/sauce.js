@@ -2,6 +2,7 @@
 const Sauce = require('../models/Sauce');
 //module de gestion de fichiers(File System)
 const fs    = require('fs');
+const jwt = require('jsonwebtoken');
 
 exports.getAllSauces = (req,res,next) =>{
     //methode find pour renvoyer un tableau de ttes les sauces ds la BDD
@@ -86,6 +87,7 @@ exports.modifySauce = (req,res,next) => {
     : {...req.body};
     // modifier une 'sauce'comparaison(id = id envoyé ds les params de requête), 2eme argument  nouvelle version de l'objet
     Sauce.updateOne({ _id: req.params.id}, {...sauceObject, _id: req.params.id})
+    
     .then(() => res.status(200).json({message: 'Sauce modifiée'}))
     .catch(error => res.status(400).json({error}));
 };
