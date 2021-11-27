@@ -1,6 +1,8 @@
 //importation librairie express dans app pour ajouter les fonctionnalités appropriées
 const express     = require('express');
 const app         = express();
+//HELMET collection de middleware définissant des en-têtes HTTP liés à la sécurité
+const helmet      = require('helmet');
 //MONGOOSE facilite les interactions avec la BDD
 const mongoose    = require('mongoose');
 //accès au chemin de notre serveur(path)
@@ -17,6 +19,7 @@ mongoose.connect(process.env.CONNECT_MDB,
 .then(() => console.log('Connexion à MongoDB réussie !'))
 .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+app.use(helmet());
 
 //CORS
 app.use((req, res, next) => {
