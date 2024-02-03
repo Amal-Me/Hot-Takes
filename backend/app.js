@@ -11,7 +11,7 @@ const userRoutes  = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 //importation dotenv pour masquer les informations voulues 
 require('dotenv').config();
-
+//mongoose.set('strictQuery', true);
 //connection a la base de données
 mongoose.connect(process.env.CONNECT_MDB,
   { useNewUrlParser: true,
