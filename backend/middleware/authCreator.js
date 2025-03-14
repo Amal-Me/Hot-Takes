@@ -1,7 +1,7 @@
 const Sauce = require('../models/Sauce');
 
 module.exports = (req, res, next) => {
-   // on cherche la sauce pour récupérer l id du créateur
+   //  récupéreration de l id du créateur
     Sauce.findOne({ _id: req.params.id})
     .then(sauce => { 
     //comparaison id du créateur avec celui extrait du token

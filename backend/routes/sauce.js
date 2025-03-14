@@ -1,4 +1,4 @@
-//création d'un routeur 
+//création routeur 
 const express   = require('express');
 const router    = express.Router();
 
@@ -8,7 +8,7 @@ const auth      = require('../middleware/auth');
 const authCreator = require('../middleware/authCreator');
 const multer    = require('../middleware/multer-config');
 
-//chemin d'authentification, de gestion de fichiers entrants et de traitement associé
+//chemin d'authentification, de gestion de fichiers entrants et du traitement associé
 router.get('/', auth, sauceCtrl.getAllSauces);
 router.get('/:id', auth, sauceCtrl.getOneSauce);
 router.post('/', auth, multer, sauceCtrl.createSauce);

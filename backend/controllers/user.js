@@ -1,8 +1,7 @@
-//utilisation de bcrypt pour crypter les données
+//cryptage des données
 const bcrypt    = require('bcrypt');
-//importation du model User
 const User      = require('../models/User');
-//jeton permettant d’échanger des informations de manière sécurisée
+//jeton sécurisé
 const jwt       = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -10,7 +9,6 @@ exports.signup = (req,res,next) =>{
     //chiffrement du mot de passe
     bcrypt.hash(req.body.password, 10)
     .then(hash => { 
-        // création utilisateur
         const user = new User({
            email: req.body.email,
            password: hash 
@@ -24,7 +22,7 @@ exports.signup = (req,res,next) =>{
 };
 
 exports.login = (req,res,next) =>{  
-    //on trouve l'utilisateur par l'email du corps de la requête 
+    //recherche de l'utilisateur par son email
     User.findOne({ email: req.body.email}) 
     .then(user => {
         if(!user) { return res.status(401).json({error: 'Utilisateur non trouvé'});}

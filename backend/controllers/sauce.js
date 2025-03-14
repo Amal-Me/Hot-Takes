@@ -1,41 +1,54 @@
-//importation du model Sauce
+
 const Sauce = require('../models/Sauce');
 //module de gestion de fichiers(File System)
 const fs    = require('fs');
 const jwt = require('jsonwebtoken');
 
 exports.getAllSauces = (req,res,next) =>{
-    //methode find pour renvoyer un tableau de ttes les sauces ds la BDD
+    //renvoi un tableau de ttes les sauces de la BDD
     Sauce.find()
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({error}));
 };
 
 exports.getOneSauce = (req,res,next) =>{
-    //trouve la sauce qui a le même ID que l ID paramètre de la requête
+    //recherche par ID
     Sauce.findOne({ _id: req.params.id})
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(400).json({error}));
 };
 
-exports.createSauce = (req,res,next) =>{
-    const sauceObject = JSON.parse(req.body.sauce);
-    delete sauceObject._id;
-    //création d une nouvelle Sauce(mongoose crée par défaut un champ _id)
-    const sauce = new Sauce({
-       ...sauceObject ,
-       //premier segment(HTTP),hôte du serveur(localhost), /images/ et le nom du fichier
-       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-       likes: 0,
-       dislikes: 0,
-       usersLiked: [],
-       usersDisliked: []
-    });
-    // la méthode save() enregistre dans la collection "Sauces" de la BDD
-    sauce.save()
-    .then(() => res.status(201).json({ message : 'Sauce enregistrée'}))
-    .catch(error => res.status(400).json({error}));
+exports.createSauce = (req, res, next) => {
+    try {
+        if (!req.body.sauce) {
+            return res.status(400).json({ error: "Aucune donnée reçue." });
+        }
+
+        const sauceObject = JSON.parse(req.body.sauce);
+        delete sauceObject._id;
+
+        if (!req.file) {
+            return res.status(400).json({ error: "Aucune image téléchargée." });
+        }
+
+        const sauce = new Sauce({
+            ...sauceObject,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            likes: 0,
+            dislikes: 0,
+            usersLiked: [],
+            usersDisliked: []
+        });
+
+        sauce.save()
+            .then(() => res.status(201).json({ message: 'Sauce enregistrée' }))
+            .catch(error => res.status(400).json({ error }));
+    } catch (error) {
+        res.status(500).json({ error: "Erreur interne du serveur." });
+    }
 };
+
+
 
 //gestion des likes
 exports.likeSauce = (req,res,next) => {

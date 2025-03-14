@@ -1,4 +1,5 @@
-//importation package HTTP pour créer un serveur
+//gestion du lancement du serveur (création, gestion des ports et des erreurs)
+
 const http          = require('http');
 const app           = require('./app');
 const normalizePort = val => {
@@ -8,11 +9,11 @@ const normalizePort = val => {
   return false;
 };
 
-//renvoi un port valide
+
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-//recherche les erreurs et les gère
+
 const errorHandler = error => {
   if (error.syscall !== 'listen') { throw error;}
   const address = server.address();
@@ -33,7 +34,7 @@ const errorHandler = error => {
 const server = http.createServer(app);
 server.on('error', errorHandler);
 
-//ecouteur sur le port ou le canal nommé
+
 server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
