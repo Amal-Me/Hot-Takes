@@ -35,7 +35,8 @@ PORT
 
 4️⃣ **Lancer le serveur**  
 ```bash
-npm start
+node server.js (B)
+npm start (F)
 ```
 
   
